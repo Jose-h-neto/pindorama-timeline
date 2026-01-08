@@ -1,0 +1,453 @@
+/* Variáveis de Cores */
+:root {
+    --primary-color: #16660f;
+    --warning-color: #f1c40f;
+    --success-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --bg-dark: #080f30;
+    --card-text: #222222;
+}
+
+/* Estilo do Aviso Mobile */
+#aviso-mobile {
+    display: none;
+    /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-dark);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.conteudo-aviso h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.icone-desktop {
+    font-size: 4rem;
+    margin-top: 30px;
+}
+
+/* REGRA DE DETECÇÃO: Ativa em telas menores que 800px */
+@media (max-width: 800px) {
+    #aviso-mobile {
+        display: flex;
+        /* Mostra o aviso */
+    }
+
+    /* Esconde o jogo para não carregar recursos desnecessários */
+    #tela-selecao,
+    #tela-jogo,
+    #modal-fim {
+        display: none !important;
+    }
+
+    body {
+        overflow: hidden;
+        /* Impede o scroll na mensagem de erro */
+    }
+}
+
+/* Reset e Estrutura Base */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: var(--bg-dark);
+    margin: 0;
+    font-family: "Walter Turncoat", cursive;
+    color: #ffffff;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+}
+
+/* Configuração das Telas */
+#tela-selecao,
+#tela-jogo {
+    display: none;
+    /* Controlado pelo JS */
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+#container-vidas {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    /* Altura fixa para evitar pulos no layout */
+}
+
+.coracao {
+    width: 40px;
+    /* Ajuste para o tamanho que desejar */
+    height: 40px;
+    object-fit: contain;
+    /* Garante que a imagem caiba no quadrado sem esticar */
+    transition: transform 0.3s ease;
+}
+
+.coracao.perdeu {
+    /* Removemos o grayscale porque a imagem já é a versão 'morta' */
+    opacity: 0.8;
+    /* Apenas uma leve transparência se desejar */
+    transform: scale(0.9);
+    /* Opcional: diminui um pouco o tamanho */
+    transition: all 0.3s ease;
+}
+
+/* Tipografia */
+h1,
+h2 {
+    color: var(--warning-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    text-align: center;
+    margin: 10px 0 20px 0;
+}
+
+.mini-logo {
+    font-family: "Freckle Face", cursive;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    /* Remove margens extras */
+    color: var(--card-text);
+}
+
+.tag-status {
+    font-size: 0.75rem;
+    color: #555;
+    /* Um cinza um pouco mais escuro para ler melhor */
+    margin-top: 5px;
+    font-style: italic;
+    /* Opcional: deixa a tag elegante */
+}
+
+.ano-revelado {
+    margin-top: auto;
+    /* Empurra o ano para o fim do card */
+    font-family: "Freckle Face", cursive;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+/* Cartas e Dropzones (IMPEDIR ESMAGAMENTO) */
+.card,
+.dropzone {
+    flex-shrink: 0 !important;
+    /* Essencial para manter o tamanho original */
+    user-select: none;
+}
+
+.card {
+    width: 160px;
+    height: 230px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #fff;
+    color: var(--card-text);
+    cursor: grab;
+    overflow: hidden;
+    touch-action: none;
+    /* Impede o scroll da página enquanto segura a carta */
+    -webkit-user-drag: element;
+    /* Melhora suporte em navegadores Safari/iOS */
+}
+
+/* Correção do Arrastar: Clique atravessa para o fundo da carta */
+.card-img,
+.card-title,
+.tag-status,
+.ano-revelado {
+    pointer-events: none;
+}
+
+.card-img-container {
+    width: 100%;
+    height: 100px;
+    background: #eee;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-info {
+    padding: 10px;
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Bloco que contém a linha do tempo e não deixa sair da tela */
+#area-timeline {
+    width: 90%;
+    max-width: 1100px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+
+    /* SUPORTE PARA FIREFOX: cor do 'pegador' e cor do 'fundo' */
+    scrollbar-width: auto;
+    scrollbar-color: #f1c40f rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbar para Chrome, Edge e Safari */
+#area-timeline::-webkit-scrollbar {
+    height: 15px;
+}
+
+#area-timeline::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+#area-timeline::-webkit-scrollbar-thumb {
+    background: #f1c40f;
+    border-radius: 25px;
+    border: 3px solid transparent;
+    /* Dá um espaçamento elegante */
+    background-clip: content-box;
+}
+
+#area-timeline::-webkit-scrollbar-thumb:hover {
+    background-color: var(--success-color);
+}
+
+/* O conteúdo dentro do bloco */
+#linha-do-tempo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 280px;
+    width: max-content;
+    /* Faz o conteúdo esticar para ativar o scroll */
+    margin: 0 auto;
+    /* Centraliza se houver poucas cartas */
+}
+
+.dropzone {
+    width: 60px;
+    height: 230px;
+    border: 3px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.dropzone.drag-over {
+    width: 165px;
+    background: rgba(46, 204, 113, 0.2);
+    border-color: var(--success-color);
+}
+
+/* Modal de Fim de Jogo (CENTRALIZAÇÃO FIXA) */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    /* Mudado para flex pelo JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-conteudo {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    text-align: center;
+    color: #222;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    border: 6px solid var(--primary-color);
+}
+
+.modal-conteudo h2 {
+    color: var(--primary-color);
+    text-shadow: none;
+    font-size: 2.5rem;
+    margin-top: 0;
+}
+
+.botes-modal {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Botões Gerais */
+button {
+    font-family: "Walter Turncoat", cursive;
+    font-size: 1.2rem;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+.btn-modo-geral {
+    background-color: var(--primary-color);
+    color: white;
+    grid-column: 1/-1;
+}
+
+.btn-modo {
+    background-color: #1a2a80;
+    color: white;
+}
+
+.btn-reiniciar {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-menu {
+    background-color: #7f8c8d;
+    color: white;
+}
+
+.btn-sair {
+    background-color: var(--danger-color);
+    color: white;
+    margin-top: 15px;
+}
+
+/* Grid de Seleção */
+.grid-modalidades {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 30px;
+}
+
+/* Feedbacks */
+.feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 2rem;
+    z-index: 5000;
+    pointer-events: none;
+    animation: popIn 0.4s ease-out;
+}
+
+@keyframes popIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.feedback.error {
+    background: var(--danger-color);
+    color: white;
+}
+
+.feedback.info {
+    background: var(--success-color);
+    color: white;
+}
+
+/* HUD */
+#container-vidas {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.coracao {
+    width: 35px;
+    height: 35px;
+}
+
+.coracao.perdeu {
+    filter: grayscale(100%);
+    opacity: 0.3;
+}
+
+/* Animação de pulso e borda para a carta que acabou de ser jogada */
+.card-nova {
+    animation: pulsoVerde 1.5s ease-out;
+    /* Força a borda inicial para garantir que apareça assim que renderiza */
+    border: 3px solid var(--success-color) !important;
+}
+
+@keyframes pulsoVerde {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+        transform: scale(1);
+        border-color: var(--success-color);
+    }
+
+    50% {
+        box-shadow: 0 0 20px 10px rgba(46, 204, 113, 0.3);
+        transform: scale(1.05);
+        border-color: var(--success-color);
+    }
+
+    100% {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        transform: scale(1);
+        border-color: #ffffff;
+        /* Volta para a cor branca original da borda */
+    }
+}
