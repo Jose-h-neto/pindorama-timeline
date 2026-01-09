@@ -169,15 +169,26 @@ function showFeedback(text, isError = false) {
 function atualizarVidasUI() {
     const cont = document.getElementById('container-vidas');
     if (!cont) return;
+
     cont.innerHTML = '';
     const perdidas = 3 - vidas;
+
     for (let i = 1; i <= 3; i++) {
         const img = document.createElement('img');
-        img.src = i <= perdidas ? `images/vida${i}-morto.png` : `images/vida${i}.png`;
-        img.className = 'coracao';
+        img.src = i <= perdidas
+            ? `images/vida${i}-morto.png`
+            : `images/vida${i}.png`;
+
+        img.classList.add('coracao');
+
+        if (i <= perdidas) {
+            img.classList.add('perdeu'); // 🔥 AQUI
+        }
+
         cont.appendChild(img);
     }
 }
+
 
 function atualizarScoreUI() {
     document.getElementById('score').innerText = score;

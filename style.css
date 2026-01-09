@@ -4,7 +4,7 @@
     --warning-color: #f1c40f;
     --success-color: #2ecc71;
     --danger-color: #e74c3c;
-    --bg-dark: #080f30;
+    --bg-dark: #0d1749;
     --card-text: #222222;
 }
 
@@ -63,7 +63,7 @@ body {
     align-items: flex-start;
     background-color: var(--bg-dark);
     margin: 0;
-    font-family: "Walter Turncoat", cursive;
+    font-family: "archivo", sans-serif;
     color: #ffffff;
     overflow-x: hidden;
     overscroll-behavior-y: contain;
@@ -88,14 +88,12 @@ body {
     gap: 10px;
     justify-content: center;
     align-items: center;
-    height: 50px;
-    /* Altura fixa para evitar pulos no layout */
 }
 
 .coracao {
-    width: 40px;
+    width: 150px;
     /* Ajuste para o tamanho que desejar */
-    height: 40px;
+    height: 150px;
     object-fit: contain;
     /* Garante que a imagem caiba no quadrado sem esticar */
     transition: transform 0.3s ease;
@@ -103,7 +101,7 @@ body {
 
 .coracao.perdeu {
     /* Removemos o grayscale porque a imagem já é a versão 'morta' */
-    opacity: 0.8;
+    opacity: 0.3;
     /* Apenas uma leve transparência se desejar */
     transform: scale(0.9);
     /* Opcional: diminui um pouco o tamanho */
@@ -126,7 +124,7 @@ p {
 }
 
 .mini-logo {
-    font-family: "Freckle Face", cursive;
+    font-family: "archivo", sans-serif;
     font-size: 3rem;
     margin-bottom: 20px;
 }
@@ -140,19 +138,19 @@ p {
 }
 
 .tag-status {
-    font-size: 0.75rem;
+    font-size: 0.905rem;
     color: #555;
-    /* Um cinza um pouco mais escuro para ler melhor */
     margin-top: 5px;
-    font-style: italic;
-    /* Opcional: deixa a tag elegante */
+    font-weight: bold;
 }
+
 
 .ano-revelado {
     margin-top: auto;
     /* Empurra o ano para o fim do card */
-    font-family: "Freckle Face", cursive;
+    font-family: "archivo", sans-serif;
     font-size: 1.4rem;
+    font-weight: bold;
     color: var(--primary-color);
 }
 
@@ -227,6 +225,39 @@ p {
     /* SUPORTE PARA FIREFOX: cor do 'pegador' e cor do 'fundo' */
     scrollbar-width: auto;
     scrollbar-color: #f1c40f rgba(0, 0, 0, 0.2);
+}
+
+.logo-pindorama {
+    width: 260px;
+    /* ajuste livre */
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 20px;
+    display: block;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#tela-selecao header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* centraliza horizontal */
+    text-align: center;
+}
+
+.logo-pindorama {
+    width: 480px;
+    /* ajuste fino aqui */
+    max-width: 90%;
+    height: auto;
+    margin: 0 auto 20px;
+    /* centraliza + espaço embaixo */
+    display: block;
 }
 
 /* Scrollbar para Chrome, Edge e Safari */
@@ -313,29 +344,81 @@ p {
 
 .botes-modal {
     display: flex;
-    gap: 15px;
+    gap: 14px;
     justify-content: center;
     margin-top: 30px;
 }
 
-/* Botões Gerais */
+/* Base para TODOS os botões */
 button {
-    font-family: "Walter Turncoat", cursive;
-    font-size: 1.2rem;
-    padding: 12px 24px;
-    border-radius: 12px;
-    border: none;
+    margin: 10px;
+    position: relative;
+    display: inline-block;
     cursor: pointer;
-    transition: transform 0.2s, filter 0.2s;
+    outline: none;
+    border: 3px solid #0d022c;
+    border-radius: 14px;
+
+    font-family: "Archivo", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    padding: 25px 30px;
+
+    background: #0d022c;
+    color: #160635;
+
+    transform-style: preserve-3d;
+    transition: transform 150ms cubic-bezier(0, 0, 1, 1),
+        background 150ms ease;
+
+    /* sombra REAL (ambiente) */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
 }
 
+/* CAMADA 3D (corpo do botão) */
+button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: #150444;
+    border-radius: inherit;
+
+    /* borda + degrau sólido */
+    box-shadow:
+        0 0 0 3px #0d022c,
+        0 10px 0 0 #050a25;
+
+    transform: translate3d(0, 10px, -1px);
+    transition: transform 150ms cubic-bezier(0, 0, 1, 1);
+}
+
+/* HOVER */
 button:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
+    background: #f7dc6f;
+    transform: translateY(4px);
+}
+
+button:hover::before {
+    transform: translate3d(0, 10px, -1px);
+}
+
+/* CLICK */
+button:active {
+    transform: translateY(10px);
+}
+
+button:active::before {
+    transform: translate3d(0, 0, -1px);
+    box-shadow:
+        0 0 0 3px #080f30,
+        0 4px 0 0 #080f30;
 }
 
 .btn-modo-geral {
-    background-color: var(--primary-color);
+    background-color: #1a2a80;
     color: white;
     grid-column: 1/-1;
 }
@@ -358,8 +441,10 @@ button:hover {
 .btn-sair {
     background-color: var(--danger-color);
     color: white;
-    margin-top: 15px;
+    margin: 15px auto 0;
+    display: block;
 }
+
 
 /* Grid de Seleção */
 .grid-modalidades {
@@ -407,26 +492,9 @@ button:hover {
     color: white;
 }
 
-/* HUD */
-#container-vidas {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.coracao {
-    width: 35px;
-    height: 35px;
-}
-
-.coracao.perdeu {
-    filter: grayscale(100%);
-    opacity: 0.3;
-}
-
 /* Animação de pulso e borda para a carta que acabou de ser jogada */
 .card-nova {
-    animation: pulsoVerde 1.5s ease-out;
+    animation: pulsoVerde 2s ease-out;
     /* Força a borda inicial para garantir que apareça assim que renderiza */
     border: 3px solid var(--success-color) !important;
 }
